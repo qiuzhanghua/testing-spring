@@ -1,5 +1,7 @@
 package com.example;
 
 public interface Expression {
-    public Money reduce(Bank bank, String currency);
+    Money reduce(Bank bank, String currency);
+    Expression plus(Expression addend);
+    Expression times(int multiplier);
 }

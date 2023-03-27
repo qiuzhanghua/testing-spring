@@ -4,7 +4,7 @@ package com.example;
 import java.util.HashMap;
 
 public class Bank {
-    private HashMap<Pair, Integer> rateMap = new HashMap<>();
+    private final HashMap<Pair, Integer> rateMap = new HashMap<>();
 
     public Money reduce(Expression source, String currency) {
         return source.reduce(this, currency);
