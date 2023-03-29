@@ -11,6 +11,7 @@
     <modules>
         <module>tdd</module>
         <module>intro-junit5</module>
+        <module>testing-java-junit5</module>
     </modules>
 
     <properties>
