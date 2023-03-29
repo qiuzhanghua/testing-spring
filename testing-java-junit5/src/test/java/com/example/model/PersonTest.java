@@ -26,5 +26,5 @@ class PersonTest {
                 () -> assertEquals("Buck", person.getLastName(), "Last Name Failed")
         );
     }
-    
+
 }
