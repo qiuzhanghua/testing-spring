@@ -9,8 +9,9 @@ public class Bank {
     public Money reduce(Expression source, String currency) {
         return source.reduce(this, currency);
     }
+
     public int rate(String from, String to) {
-        if (from.equals(to)){
+        if (from.equals(to)) {
             return 1;
         }
         return rateMap.get(new Pair(from, to));
@@ -19,4 +20,5 @@ public class Bank {
     public void addRate(String from, String to, int rate) {
         rateMap.put(new Pair(from, to), rate);
     }
+
 }
