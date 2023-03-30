@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.ControllerTests;
 import com.example.fauxspring.Model;
 import com.example.fauxspring.ModelMapImpl;
 import com.example.model.Vet;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VetControllerTest {
+class VetControllerTest implements ControllerTests {
     VetController vetController;
     VetService vetService;
     SpecialityService specialityService;
