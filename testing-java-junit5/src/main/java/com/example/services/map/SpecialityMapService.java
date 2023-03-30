@@ -1,11 +1,11 @@
 package com.example.services.map;
 
 import com.example.model.Speciality;
-import com.example.services.SpecialtyService;
+import com.example.services.SpecialityService;
 
 import java.util.Set;
 
-public class SpecialityMapService extends AbstractMapService<Speciality, Long> implements SpecialtyService {
+public class SpecialityMapService extends AbstractMapService<Speciality, Long> implements SpecialityService {
 
     @Override
     public Set<Speciality> findAll() {

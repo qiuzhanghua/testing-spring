@@ -2,17 +2,17 @@ package com.example.services.map;
 
 import com.example.model.Speciality;
 import com.example.model.Vet;
-import com.example.services.SpecialtyService;
+import com.example.services.SpecialityService;
 import com.example.services.VetService;
 
 import java.util.Set;
 
 public class VetMapService extends AbstractMapService<Vet, Long> implements VetService {
 
-    private final SpecialtyService specialtyService;
+    private final SpecialityService specialityService;
 
-    public VetMapService(SpecialtyService specialtyService) {
-        this.specialtyService = specialtyService;
+    public VetMapService(SpecialityService specialityService) {
+        this.specialityService = specialityService;
     }
 
     @Override
@@ -28,10 +28,10 @@ public class VetMapService extends AbstractMapService<Vet, Long> implements VetS
     @Override
     public Vet save(Vet object) {
 
-        if (object.getSpecialities().size() > 0){
+        if (object.getSpecialities() != null && object.getSpecialities().size() > 0){
             object.getSpecialities().forEach(speciality -> {
                 if(speciality.getId() == null){
-                    Speciality savedSpecialty = specialtyService.save(speciality);
+                    Speciality savedSpecialty = specialityService.save(speciality);
                     speciality.setId(savedSpecialty.getId());
                 }
             });

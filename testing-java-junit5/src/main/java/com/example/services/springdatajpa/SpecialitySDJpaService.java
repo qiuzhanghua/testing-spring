@@ -2,13 +2,13 @@ package com.example.services.springdatajpa;
 
 import com.example.model.Speciality;
 import com.example.repositories.SpecialtyRepository;
-import com.example.services.SpecialtyService;
+import com.example.services.SpecialityService;
 
 import java.util.HashSet;
 import java.util.Set;
 
 
-public class SpecialitySDJpaService implements SpecialtyService {
+public class SpecialitySDJpaService implements SpecialityService {
 
     private final SpecialtyRepository specialtyRepository;
 
