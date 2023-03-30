@@ -4,10 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.condition.JRE.JAVA_17;
+import static org.junit.jupiter.api.condition.JRE.JAVA_8;
+import static org.junit.jupiter.api.condition.OS.*;
 
 class IndexControllerTest {
 
@@ -69,4 +76,36 @@ class IndexControllerTest {
         System.out.println("TDP not installed");
     }
 
+
+    @Test
+    @EnabledOnOs(MAC)
+    void testOnMac() {
+        assumeTrue("Mac OS X".equals(System.getProperty("os.name")), "Test is only on Mac");
+        System.out.println("Running on Mac");
+    }
+
+    @Test
+    @EnabledOnOs(WINDOWS)
+    void testOnWindows() {
+        assumeTrue("Windows 10".equals(System.getProperty("os.name")), "Test is only on Windows");
+        System.out.println("Running on Windows 10");
+    }
+
+    @Test
+    @EnabledOnJre(JAVA_8)
+    void testOnJava8() {
+        System.out.println("Running on Java 8");
+    }
+
+    @Test
+    @EnabledOnJre(JAVA_17)
+    void testOnJava17() {
+        System.out.println("Running on Java 17");
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "USER", matches = "q")
+    void testIfUserQ() {
+        System.out.println("Running this as user is q");
+    }
 }
