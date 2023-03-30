@@ -1,5 +1,6 @@
 package com.example.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,7 +45,8 @@ class OwnerTest {
         );
     }
 
-    @ParameterizedTest
+    @DisplayName("Value Source Test -")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
     @ValueSource(strings = {"Spring", "Framework", "Boot"})
     void testValueSource(String val)  {
         System.out.println(val);
