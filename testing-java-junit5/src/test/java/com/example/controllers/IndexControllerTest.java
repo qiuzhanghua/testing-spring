@@ -1,10 +1,13 @@
 package com.example.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class IndexControllerTest {
 
@@ -33,4 +36,37 @@ class IndexControllerTest {
 //                "Message to build" +
 //                "for my test");
     }
+
+    @Test
+    @Disabled("Demo of timout")
+    void testTimeout() {
+        assertTimeout(ofMillis(100), () -> {
+            Thread.sleep(2000);
+            System.out.println("I got here");
+        });
+    }
+
+    @Disabled("Demo of timout")
+    @Test
+    void testTimeoutPreemptively() {
+        assertTimeoutPreemptively(ofMillis(100), () -> {
+            Thread.sleep(5000);
+            System.out.println("I got here 234");
+        });
+    }
+
+
+    @Test
+    void testAssumptions() {
+        assumeTrue("lib".equalsIgnoreCase(System.getenv("TDP_LIB")), "TDP not installed");
+        System.out.println("TDP is installed");
+    }
+
+    @Test
+    void testAssumptions2() {
+        // actually skipped
+        assumeTrue("".equalsIgnoreCase(System.getenv("TDP_LIB")), "TDP installed?");
+        System.out.println("TDP not installed");
+    }
+
 }
