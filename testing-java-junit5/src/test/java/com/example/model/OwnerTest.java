@@ -2,6 +2,8 @@ package com.example.model;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +42,12 @@ class OwnerTest {
                     );
                 }
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Spring", "Framework", "Boot"})
+    void testValueSource(String val)  {
+        System.out.println(val);
     }
 
 }
