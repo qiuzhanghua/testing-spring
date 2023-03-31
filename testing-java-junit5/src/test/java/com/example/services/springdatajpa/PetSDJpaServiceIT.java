@@ -1,10 +1,13 @@
 package com.example.services.springdatajpa;
 
+import com.example.junitextensions.TimingExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(TimingExtension.class)
 class PetSDJpaServiceIT {
 
     @BeforeEach
