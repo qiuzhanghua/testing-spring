@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.CustomArgsProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -93,4 +94,12 @@ class OwnerTest {
                 Arguments.of("MI", 3, 3)
         );
     }
+
+    @DisplayName("Custom Provider Source Test -")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
+    @ArgumentsSource(CustomArgsProvider.class)
+    void customProviderTest(String stateName, int val1, int val2)  {
+        System.out.println(stateName + " = " + val1 + " : " + val2);
+    }
+
 }
