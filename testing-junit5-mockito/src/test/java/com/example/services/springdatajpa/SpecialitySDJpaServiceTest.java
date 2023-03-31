@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class SpecialitySDJpaServiceTest {
@@ -18,6 +19,15 @@ class SpecialitySDJpaServiceTest {
 
     @InjectMocks
     SpecialitySDJpaService service;
+
+    @Test
+    void findByIdTest() {
+        Speciality speciality = new Speciality();
+        when(specialityRepository.findById(1L)).thenReturn(java.util.Optional.of(speciality));
+        Speciality foundSpeciality = service.findById(1L);
+        assertThat(foundSpeciality).isNotNull();
+        verify(specialityRepository).findById(1L);
+    }
 
     @Test
     void deleteById() {
