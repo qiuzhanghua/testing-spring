@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 class SpecialitySDJpaServiceTest {
 
-    @Mock
+    @Mock(strictness = Mock.Strictness.LENIENT)
     SpecialityRepository specialityRepository;
 
     @InjectMocks
@@ -104,5 +104,25 @@ class SpecialitySDJpaServiceTest {
         willThrow(new RuntimeException("boom")).given(specialityRepository).delete(any());
         org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> service.delete(new Speciality()));
         then(specialityRepository).should().delete(any(Speciality.class));
+    }
+
+    @Test
+    void testSaveLambda() {
+        String matchMe = "matchMe";
+        Speciality speciality = new Speciality();
+        speciality.setDescription(matchMe);
+        given(specialityRepository.save(argThat(argument -> argument.getDescription().equals(matchMe)))).willReturn(speciality);
+        Speciality savedSpeciality = service.save(speciality);
+        assertThat(savedSpeciality.getDescription()).isEqualTo(matchMe);
+    }
+
+    @Test
+    void testSaveLambdaNotMatch() {
+        String matchMe = "matchMe";
+        Speciality speciality = new Speciality();
+        speciality.setDescription("Net Match");
+        given(specialityRepository.save(argThat(argument -> argument.getDescription().equals(matchMe)))).willReturn(speciality);
+        Speciality savedSpeciality = service.save(speciality);
+        assertThat(savedSpeciality).isNull();
     }
 }
