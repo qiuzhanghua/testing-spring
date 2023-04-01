@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +35,20 @@ class SpecialitySDJpaServiceTest {
         Speciality foundSpeciality = service.findById(1L);
         assertThat(foundSpeciality).isNotNull();
         verify(specialityRepository).findById(1L);
+    }
+
+    @Test
+    void findByIdBDDTest() {
+        Speciality speciality = new Speciality();
+        // Given
+        given(specialityRepository.findById(1L)).willReturn(java.util.Optional.of(speciality));
+        // When
+        Speciality foundSpeciality = service.findById(1L);
+        // Then
+        assertThat(foundSpeciality).isNotNull();
+//        then(specialityRepository).should().findById(1L);
+        then(specialityRepository).should(times(1)).findById(1L);
+        then(specialityRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
