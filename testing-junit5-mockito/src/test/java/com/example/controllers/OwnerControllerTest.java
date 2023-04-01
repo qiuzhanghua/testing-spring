@@ -14,7 +14,7 @@ import org.mockito.quality.Strictness;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mock.Strictness.LENIENT;
 
@@ -24,6 +24,9 @@ class OwnerControllerTest {
 
     @Mock(strictness = LENIENT)
     OwnerService ownerService;
+
+    @Mock
+    Model model;
 
     @InjectMocks
     OwnerController controller;
@@ -66,6 +69,7 @@ class OwnerControllerTest {
     void processFindFormWildcardNotFound() {
         // Given
         Owner owner = new Owner(1L, "Joe", "DontFindMe");
+
         // When
         String viewName = controller.processFindForm(owner, bindingResult, null);
         // Then
@@ -77,11 +81,15 @@ class OwnerControllerTest {
     void processFindFormWildcardFound() {
         // Given
         Owner owner = new Owner(1L, "Joe", "FindMe");
+        InOrder inOrder = Mockito.inOrder(ownerService, model);
+
         // When
-        String viewName = controller.processFindForm(owner, bindingResult, Mockito.mock(Model.class));
+        String viewName = controller.processFindForm(owner, bindingResult, model);
         // Then
         assertThat(stringArgumentCaptor.getValue()).isEqualToIgnoringCase("%FindMe%");
         assertThat(viewName).isEqualToIgnoringCase("owners/ownersList");
+        inOrder.verify(ownerService).findAllByLastNameLike(anyString());
+        inOrder.verify(model).addAttribute(anyString(), anyList());
     }
 
     @Test
