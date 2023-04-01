@@ -37,7 +37,8 @@ class SpecialitySDJpaServiceTest {
         when(specialityRepository.findById(1L)).thenReturn(java.util.Optional.of(speciality));
         Speciality foundSpeciality = service.findById(1L);
         assertThat(foundSpeciality).isNotNull();
-        verify(specialityRepository).findById(1L);
+        then(specialityRepository).should(timeout(100)).findById(1L);
+        then(specialityRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
@@ -61,7 +62,7 @@ class SpecialitySDJpaServiceTest {
         service.deleteById(1L);
         service.deleteById(1L);
         // Then
-        then(specialityRepository).should(times(2)).deleteById(1L);
+        then(specialityRepository).should(timeout(100).times(2)).deleteById(1L);
         then(specialityRepository).shouldHaveNoMoreInteractions();
     }
 
@@ -72,7 +73,7 @@ class SpecialitySDJpaServiceTest {
         service.deleteById(1L);
         service.deleteById(1L);
         // Then
-        then(specialityRepository).should(atLeastOnce()).deleteById(1L);
+        then(specialityRepository).should(timeout(1000).atLeastOnce()).deleteById(1L);
         then(specialityRepository).shouldHaveNoMoreInteractions();
         then(specialityRepository).should(never()).deleteById(3L);
 //        verify(specialityRepository, atLeast(1)).deleteById(1L);
