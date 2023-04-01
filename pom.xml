@@ -13,6 +13,7 @@
         <module>intro-junit5</module>
         <module>testing-java-junit5</module>
         <module>testing-junit5-mockito</module>
+        <module>spring-petclinic</module>
     </modules>
 
     <properties>
