@@ -25,7 +25,7 @@ class SpecialitySDJpaServiceTest {
         service.delete(new Speciality());
         verify(specialityRepository).delete(any(Speciality.class));
     }
-    
+
     @Test
     void findByIdTest() {
         Speciality speciality = new Speciality();
