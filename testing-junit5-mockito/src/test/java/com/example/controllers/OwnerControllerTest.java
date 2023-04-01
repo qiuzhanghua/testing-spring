@@ -3,15 +3,17 @@ package com.example.controllers;
 import com.example.fauxspring.BindingResult;
 import com.example.model.Owner;
 import com.example.services.OwnerService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -27,6 +29,33 @@ class OwnerControllerTest {
     @Mock
     BindingResult bindingResult;
 
+    @Captor
+    ArgumentCaptor<String> stringArgumentCaptor;
+    @Test
+    void processFindFormWildcardStringAnnotation() {
+        // Given
+        Owner owner = new Owner(1L, "Joe", "Buck");
+        List<Owner> owners = List.of(owner);
+
+        given(ownerService.findAllByLastNameLike(stringArgumentCaptor.capture())).willReturn(owners);
+        // When
+        String viewName = controller.processFindForm(owner, bindingResult, null);
+        // Then
+        assertThat(stringArgumentCaptor.getValue()).isEqualToIgnoringCase("%Buck%");
+    }
+
+    @Test
+    void processFindFormWildcardString() {
+        // Given
+        Owner owner = new Owner(1L, "Joe", "Buck");
+        List<Owner> owners = List.of(owner);
+        final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        given(ownerService.findAllByLastNameLike(captor.capture())).willReturn(owners);
+        // When
+        String viewName = controller.processFindForm(owner, bindingResult, null);
+        // Then
+        assertThat(captor.getValue()).isEqualToIgnoringCase("%Buck%");
+    }
 
     @Test
     void processCreationFormHasErrors() {
