@@ -14,6 +14,7 @@
         <module>testing-java-junit5</module>
         <module>testing-junit5-mockito</module>
         <module>spring-petclinic</module>
+        <module>boot-brewery</module>
     </modules>
 
     <properties>
