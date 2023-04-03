@@ -4,51 +4,41 @@ import com.example.services.BeerService;
 import com.example.web.model.BeerDto;
 import com.example.web.model.BeerPagedList;
 import com.example.web.model.BeerStyleEnum;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(BeerController.class)
 class BeerControllerTest {
 
-    @Mock
+    @MockBean
     BeerService beerService;
 
-    @InjectMocks
-    BeerController beerController;
-
+    @Autowired
     MockMvc mockMvc;
     BeerDto validBeer;
 
@@ -66,7 +56,11 @@ class BeerControllerTest {
                 .createdDate(OffsetDateTime.now())
                 .lastModifiedDate(OffsetDateTime.now())
                 .build();
-        mockMvc = MockMvcBuilders.standaloneSetup(beerController).setMessageConverters(jacksonMessageConverter()).build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        reset(beerService);
     }
 
     @Test
@@ -125,16 +119,15 @@ class BeerControllerTest {
         }
     }
 
-
-    public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.configure(WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.setSerializationInclusion(NON_NULL);
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper);
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
-        return converter;
-    }
+//    public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+//        objectMapper.configure(WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+//        objectMapper.registerModule(new JavaTimeModule());
+//        objectMapper.setSerializationInclusion(NON_NULL);
+//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper);
+//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_JSON));
+//        return converter;
+//    }
 
 }
